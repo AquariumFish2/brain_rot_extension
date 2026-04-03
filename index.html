@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> </title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="grid-bg"></div>
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+      <div class="top-bar">
+        <span class="top-label">ThinkFirst</span>
+        <div class="top-right">
+          <button class="back-btn" id="backBtn" onclick="goLanding()">
+            ← Menu
+          </button>
+          <div class="status-dot">
+            <div class="dot"></div>
+            Intercepted
+          </div>
+          <div class="timer-pill" id="timerPill">2:00</div>
+        </div>
+      </div>
+
+      <div class="screen on" id="landingScreen">
+        <div class="screen-inner">
+          <div class="land-eyebrow">Brain checkpoint</div>
+          <h1 class="land-title">Match pairs.<br /><em>Unlock</em> the AI.</h1>
+          <p class="land-sub">
+            Pick a difficulty. Beat the game. Then think with AI — not instead
+            of it.
+          </p>
+          <div class="diff-cards">
+            <div class="diff-card" onclick="startGame('easy')">
+              <div class="diff-left">
+                <span class="diff-name">Easy</span
+                ><span class="diff-meta">8 pairs · 2 min</span>
+              </div>
+              <span class="diff-badge" id="badge-easy">No record</span>
+              <span class="diff-arrow">→</span>
+            </div>
+            <div class="diff-card" onclick="startGame('normal')">
+              <div class="diff-left">
+                <span class="diff-name">Normal</span
+                ><span class="diff-meta">12 pairs · 3 min</span>
+              </div>
+              <span class="diff-badge" id="badge-normal">No record</span>
+              <span class="diff-arrow">→</span>
+            </div>
+            <div class="diff-card" onclick="startGame('hard')">
+              <div class="diff-left">
+                <span class="diff-name">Hard</span
+                ><span class="diff-meta">18 pairs · 4 min</span>
+              </div>
+              <span class="diff-badge" id="badge-hard">No record</span>
+              <span class="diff-arrow">→</span>
+            </div>
+          </div>
+          <div class="scores-section">
+            <div class="scores-label">Top scores</div>
+            <div class="scores-grid">
+              <div class="score-box" id="sbox-easy">
+                <span class="sv" id="sc-easy">—</span
+                ><span class="sl">Easy</span>
+              </div>
+              <div class="score-box" id="sbox-normal">
+                <span class="sv" id="sc-normal">—</span
+                ><span class="sl">Normal</span>
+              </div>
+              <div class="score-box" id="sbox-hard">
+                <span class="sv" id="sc-hard">—</span
+                ><span class="sl">Hard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen" id="gameScreen">
+        <div class="game-inner">
+          <div class="g-eyebrow">Round active</div>
+          <h2 class="g-title">Match the pairs to <em>unlock</em> the AI</h2>
+          <div class="stats-row">
+            <div class="stat-box hl">
+              <span class="stat-val" id="pairsVal">0/8</span
+              ><span class="stat-lbl">Pairs</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val" id="movesVal">0</span
+              ><span class="stat-lbl">Moves</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val" id="bestVal">—</span
+              ><span class="stat-lbl">Best</span>
+            </div>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill" id="progFill"></div>
+          </div>
+          <div class="grid-wrap"><div class="grid" id="grid"></div></div>
+          <div class="skip-wrap">
+            <button class="btn-skip" onclick="triggerLose(true)">
+              Skip — proceed without warming up
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay ov-win" id="winOverlay">
+        <div class="new-best" id="newBestTag" style="display: none">
+          ★ New best score!
+        </div>
+        <div class="ov-icon">🧠</div>
+        <h2 class="ov-title">Mind warmed up.</h2>
+        <p class="ov-msg">
+          All pairs matched in <strong id="wMoves">—</strong> moves with
+          <strong id="wTime">—</strong> left. Think with AI — not instead of it.
+        </p>
+        <div class="ov-stats">
+          <div class="ov-stat">
+            <span class="s" id="wScore">—</span><span class="l">Score</span>
+          </div>
+          <div class="ov-stat">
+            <span class="s" id="wMovesS">—</span><span class="l">Moves</span>
+          </div>
+          <div class="ov-stat">
+            <span class="s" id="wTimeS">—</span><span class="l">Time left</span>
+          </div>
+        </div>
+        <button class="btn-g btn-gold" onclick="goToSite()">
+          Continue to the site →
+        </button>
+        <button class="btn-g btn-dark" onclick="playAgain()">Play again</button>
+        <button class="btn-g btn-dark" onclick="goLanding()">
+          Change difficulty
+        </button>
+      </div>
+
+      <div class="overlay ov-lose" id="loseOverlay">
+        <div class="ov-icon">⏱</div>
+        <h2 class="ov-title" id="loseTitleEl">Time's up.</h2>
+        <p class="ov-msg" id="loseMsgEl">Give your brain another shot.</p>
+        <div class="ov-stats">
+          <div class="ov-stat">
+            <span class="s" id="lPairs">—</span
+            ><span class="l">Pairs found</span>
+          </div>
+          <div class="ov-stat">
+            <span class="s" id="lMoves">—</span><span class="l">Moves</span>
+          </div>
+        </div>
+        <button class="btn-g btn-gold" onclick="playAgain()">Try again</button>
+        <button class="btn-g btn-dark" onclick="goLanding()">
+          Change difficulty
+        </button>
+        <button class="btn-g btn-dark" onclick="goToSite()">
+          Proceed anyway
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
