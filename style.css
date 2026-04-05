@@ -23,6 +23,7 @@
     --tf-accent-dim:  rgba(200, 168, 75, 0.15);
     --tf-line:        #1c1c1c;
     --tf-grid:        rgba(255, 255, 255, 0.022);
+    --tf-grad-end:    #000000;
 
     background: var(--tf-bg);
     color: var(--tf-text);
@@ -393,6 +394,124 @@
 
 #tf-overlay .diff-arrow { font-size: 13px; color: var(--tf-line); transition: all 0.2s; flex-shrink: 0; }
 
+/* ── Streak ─────────────────────────────────────────────────────────── */
+#tf-overlay .streak-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 16px;
+    background: var(--tf-surface);
+    border: 1px solid var(--tf-line);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+#tf-overlay .streak-header {
+    display: flex;
+    border: 1px solid var(--tf-accent);
+    padding: 8px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { box-shadow: 0 0 0 0 rgba(200,168,75,0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(200,168,75,0); }
+    100% { box-shadow: 0 0 0 0 rgba(200,168,75,0); }
+}
+
+#tf-overlay .streak-fire { font-size: 1.1rem; line-height: 1; }
+
+#tf-overlay .streak-count {
+    font-family: "Space Mono", monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--tf-accent);
+    line-height: 1;
+}
+
+#tf-overlay .streak-label {
+    font-family: "Space Mono", monospace;
+    font-size: 8px;
+    color: var(--tf-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    /* align-self: flex-end; */
+    padding-bottom: 2px;
+}
+
+/* 7-day row */
+#tf-overlay .streak-days {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+#tf-overlay .streak-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#tf-overlay .sd-name {
+    font-family: "Space Mono", monospace;
+    font-size: 7px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tf-ghost);
+    transition: color 0.2s;
+}
+
+#tf-overlay .sd-pip {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--tf-hover);
+    border: 1.5px solid var(--tf-line);
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+#tf-overlay .sd-date {
+    font-family: "Space Mono", monospace;
+    font-size: 6px;
+    color: var(--tf-ghost);
+    letter-spacing: 0.04em;
+    text-align: center;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+/* Played day */
+#tf-overlay .streak-day.played .sd-pip {
+    background: var(--tf-accent);
+    border-color: var(--tf-accent);
+    box-shadow: 0 0 8px var(--tf-accent-dim);
+}
+#tf-overlay .streak-day.played .sd-name { color: var(--tf-accent); }
+#tf-overlay .streak-day.played .sd-date { color: var(--tf-muted); }
+
+/* Today (unplayed highlight) */
+#tf-overlay .streak-day.today .sd-pip {
+    border-color: var(--tf-accent);
+    box-shadow: 0 0 0 2px var(--tf-accent-dim);
+}
+#tf-overlay .streak-day.today .sd-name { color: var(--tf-text); }
+#tf-overlay .streak-day.today .sd-date { color: var(--tf-muted); }
+
+/* Future day – dimmed */
+#tf-overlay .streak-day.future .sd-pip   { opacity: 0.35; }
+#tf-overlay .streak-day.future .sd-name  { opacity: 0.35; }
+#tf-overlay .streak-day.future .sd-date  { opacity: 0.35; }
+
 /* ── Scores ─────────────────────────────────────────────────────────── */
 #tf-overlay .scores-section { width: 100%; max-width: 340px; }
 
@@ -570,18 +689,12 @@
     justify-content: center;
 }
 
-#tf-overlay .card-b { background: var(--tf-surface); border: 1px solid var(--tf-line); }
-
-#tf-overlay .card-b-in {
-    width: 34%; height: 34%;
+#tf-overlay .card-b {
+    background: url("assets/card-back.png") center no-repeat;
+    background-size: 50% 50%;
+    background-color: var(--tf-bg);
     border: 1px solid var(--tf-line);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-
-#tf-overlay .card-b-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--tf-ghost); }
 
 #tf-overlay .card-f {
     background: var(--tf-hover);

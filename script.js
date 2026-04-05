@@ -14,6 +14,7 @@
         '--tf-accent': '#c8a84b', '--tf-accent2': '#dfc060',
         '--tf-accent-dim': 'rgba(200,168,75,0.15)',
         '--tf-line': '#1c1c1c', '--tf-grid': 'rgba(255,255,255,0.022)',
+        '--tf-grad-end': '#000000',
       },
     },
     midnight: {
@@ -24,6 +25,7 @@
         '--tf-accent': '#6c9fff', '--tf-accent2': '#88b0ff',
         '--tf-accent-dim': 'rgba(108,159,255,0.15)',
         '--tf-line': '#1e2240', '--tf-grid': 'rgba(108,159,255,0.04)',
+        '--tf-grad-end': '#060810',
       },
     },
     forest: {
@@ -34,6 +36,7 @@
         '--tf-accent': '#4db87a', '--tf-accent2': '#6acc90',
         '--tf-accent-dim': 'rgba(77,184,122,0.15)',
         '--tf-line': '#182820', '--tf-grid': 'rgba(77,184,122,0.04)',
+        '--tf-grad-end': '#060a07',
       },
     },
     cream: {
@@ -44,6 +47,7 @@
         '--tf-accent': '#b8941f', '--tf-accent2': '#c8a830',
         '--tf-accent-dim': 'rgba(184,148,31,0.15)',
         '--tf-line': '#e8e0d4', '--tf-grid': 'rgba(0,0,0,0.04)',
+        '--tf-grad-end': '#ffffff',
       },
     },
     cloud: {
@@ -54,6 +58,7 @@
         '--tf-accent': '#5b7cfa', '--tf-accent2': '#7090ff',
         '--tf-accent-dim': 'rgba(91,124,250,0.15)',
         '--tf-line': '#dde3f0', '--tf-grid': 'rgba(91,124,250,0.04)',
+        '--tf-grad-end': '#ffffff',
       },
     },
     rose: {
@@ -63,7 +68,8 @@
         '--tf-text': '#2a1a18', '--tf-muted': '#9a7060', '--tf-ghost': '#c8b0a8',
         '--tf-accent': '#c4604a', '--tf-accent2': '#d4735a',
         '--tf-accent-dim': 'rgba(196,96,74,0.15)',
-        '--tf-line': '#f0dcd8', '--tf-grid': 'rgba(196,96,74,0.04)',
+        '--tf-line': '#f0dcd8', '--tf-grid': 'rgba(196,96,74,0.1)',
+        '--tf-grad-end': '#ffffff',
       },
     },
   };
@@ -125,7 +131,8 @@
     normal: { pairs: 12, cols: 6, time: 180 },
     hard:   { pairs: 18, cols: 6, time: 180 },
   };
-  const KEY = 'tf_scores';
+  const KEY        = 'tf_scores';
+  const STREAK_KEY  = 'tf_streak';
 
   // ─── STATE ───────────────────────────────────────────────────────────
   let cur = 'easy', flipped = [], matched = 0, moves = 0,
@@ -184,6 +191,15 @@
               <span class="diff-arrow">→</span>
             </div>
           </div>
+          <!-- STREAK -->
+          <div class="streak-section" id="tf-streakSection">
+            <div class="streak-header">
+              <span class="streak-count" id="tf-streakCount">0</span>
+              <span class="streak-label">day streak</span>
+            </div>
+            <div class="streak-days" id="tf-streakDays"></div>
+          </div>
+
           <div class="scores-section">
             <div class="scores-label">Top scores</div>
             <div class="scores-grid">
@@ -313,8 +329,81 @@
     localStorage.setItem(KEY, JSON.stringify(s));
   }
 
+  // ─── STREAK ──────────────────────────────────────────────────────────
+  // Storage shape: { streak: Number, lastDate: 'YYYY-MM-DD', playedDates: ['YYYY-MM-DD', ...] }
+  function todayKey() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
+  function loadStreak() {
+    try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || { streak: 0, lastDate: null, playedDates: [] }; }
+    catch (e) { return { streak: 0, lastDate: null, playedDates: [] }; }
+  }
+
+  function updateStreak() {
+    const data  = loadStreak();
+    const today = todayKey();
+    if (data.lastDate === today) return; // already counted today
+
+    // Check if yesterday was played (streak continues)
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+    const yKey = yesterday.getFullYear() + '-' + String(yesterday.getMonth()+1).padStart(2,'0') + '-' + String(yesterday.getDate()).padStart(2,'0');
+    if (data.lastDate === yKey) {
+      data.streak++;
+    } else {
+      data.streak = 1; // reset
+    }
+    data.lastDate = today;
+    if (!data.playedDates.includes(today)) data.playedDates.push(today);
+    localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+  }
+
+  // Returns 7 day objects for the current week (Sat→Fri), each: { label, date, played, isToday }
+  function getWeekDays() {
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const data = loadStreak();
+    const today = new Date();
+    // Find most recent Saturday (day 6)
+    const todayDay = today.getDay(); // 0=Sun … 6=Sat
+    const daysFromSat = (todayDay + 1) % 7; // 0 on Sat, 1 on Sun, …
+    const satDate = new Date(today);
+    satDate.setDate(today.getDate() - daysFromSat);
+
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(satDate);
+      d.setDate(satDate.getDate() + i);
+      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      return {
+        label:   DAY_NAMES[d.getDay()],
+        date:    d.getDate() + '-' + MONTHS[d.getMonth()],
+        played:  data.playedDates.includes(key),
+        isToday: key === todayKey(),
+        future:  d > today && key !== todayKey(),
+      };
+    });
+  }
+
+  function renderStreak() {
+    const data = loadStreak();
+    const countEl = $('tf-streakCount');
+    const daysEl  = $('tf-streakDays');
+    if (!countEl || !daysEl) return;
+    countEl.textContent = data.streak;
+    const days = getWeekDays();
+    daysEl.innerHTML = days.map(d => `
+      <div class="streak-day${d.played ? ' played' : ''}${d.isToday ? ' today' : ''}${d.future ? ' future' : ''}">
+        <span class="sd-name">${d.label}</span>
+        <div class="sd-pip"></div>
+        <span class="sd-date">${d.date}</span>
+      </div>
+    `).join('');
+  }
+
   // ─── SCREENS ─────────────────────────────────────────────────────────
   function renderLanding() {
+    renderStreak();
     const saved = loadScores();
     ['easy', 'normal', 'hard'].forEach(d => {
       const score = saved[d];
@@ -392,7 +481,7 @@
       c.className = 'card'; c.dataset.e = url;
       c.innerHTML = `
         <div class="card-inner">
-          <div class="card-b"><div class="card-b-in"><div class="card-b-dot"></div></div></div>
+          <div class="card-b"></div>
           <div class="card-f"><img src="${url}" alt="card" loading="lazy"></div>
         </div>`;
       c.addEventListener('click', () => flip(c));
@@ -434,6 +523,7 @@
 
   function triggerWin() {
     clearInterval(ticker);
+    updateStreak();
     const score = calcScore(), old = loadScores()[cur], isNew = !old || score > old;
     saveScore(cur, score);
     const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
