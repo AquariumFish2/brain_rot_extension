@@ -1,0 +1,21 @@
+{
+  "name": "brain-rot",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "bugs": {
+    "url": "https://github.com/AquariumFish2/brain_rot_extension/issues"
+  },
+  "homepage": "https://github.com/AquariumFish2/brain_rot_extension#readme",
+  "devDependencies": {
+    "sass": "^1.99.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
+    "vite-plugin-web-extension": "^4.5.0"
+  }
+}

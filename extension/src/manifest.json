@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Brain Rot",
+  "version": "1.0.0",
+  "description": "Beat the game to unlock the AI. Train your brain first.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "*://chat.openai.com/*",
+    "*://chatgpt.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://chat.openai.com/*",
+        "*://chatgpt.com/*"
+      ],
+      "js": ["content/index.ts"],
+      "css": ["styles/main.scss"],
+      "run_at": "document_start"
+    }
+  ]
+}

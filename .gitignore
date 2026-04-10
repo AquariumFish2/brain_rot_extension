@@ -1,1 +1,32 @@
-.vscode
+# Dependencies
+**/node_modules
+/.pnp
+.pnp.js
+
+# Next.js
+/website/.next/
+/website/out/
+
+# Production
+/website/build
+
+# Testing
+/website/coverage
+
+# Environment variables
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+/website/next-env.d.ts
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Extension build artifacts
+/extension/dist
+/extension/out

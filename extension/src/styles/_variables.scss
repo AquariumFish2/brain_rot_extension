@@ -1,0 +1,61 @@
+// --- Colors & Palettes ---
+$palettes: (
+  "obsidian": (
+    "bg": #0f0f0f, "surface": #111111, "hover": #151209,
+    "text": #e8e4dc, "muted": #3e3e3e, "ghost": #232323,
+    "accent": #c8a84b, "accent2": #dfc060, "accent-dim": rgba(200, 168, 75, 0.15),
+    "line": #1c1c1c, "grid": rgba(255, 255, 255, 0.022)
+  ),
+  "midnight": (
+    "bg": #0d0f1a, "surface": #131628, "hover": #161b30,
+    "text": #dde4f0, "muted": #3a4060, "ghost": #252840,
+    "accent": #6c9fff, "accent2": #88b0ff, "accent-dim": rgba(108, 159, 255, 0.15),
+    "line": #1e2240, "grid": rgba(108, 159, 255, 0.04)
+  ),
+  "forest": (
+    "bg": #0c110e, "surface": #111a12, "hover": #141e15,
+    "text": #d4e8d8, "muted": #2a4030, "ghost": #1e3025,
+    "accent": #4db87a, "accent2": #6acc90, "accent-dim": rgba(77, 184, 122, 0.15),
+    "line": #182820, "grid": rgba(77, 184, 122, 0.04)
+  ),
+  "cream": (
+    "bg": #faf8f4, "surface": #ffffff, "hover": #fdf9f2,
+    "text": #1a1a1a, "muted": #888888, "ghost": #c0b8ac,
+    "accent": #b8941f, "accent2": #c8a830, "accent-dim": rgba(184, 148, 31, 0.15),
+    "line": #e8e0d4, "grid": rgba(0, 0, 0, 0.04)
+  ),
+  "cloud": (
+    "bg": #f5f7fa, "surface": #ffffff, "hover": #eef2ff,
+    "text": #1e2030, "muted": #8090b0, "ghost": #b8c4d8,
+    "accent": #5b7cfa, "accent2": #7090ff, "accent-dim": rgba(91, 124, 250, 0.15),
+    "line": #dde3f0, "grid": rgba(91, 124, 250, 0.04)
+  ),
+  "rose": (
+    "bg": #fdf7f5, "surface": #ffffff, "hover": #fcf0ed,
+    "text": #2a1a18, "muted": #9a7060, "ghost": #c8b0a8,
+    "accent": #c4604a, "accent2": #d4735a, "accent-dim": rgba(196, 96, 74, 0.15),
+    "line": #f0dcd8, "grid": rgba(196, 96, 74, 0.1)
+  )
+);
+
+// --- Typography ---
+$font-sans: "DM Sans", sans-serif;
+$font-mono: "Space Mono", monospace;
+
+// --- Spacing ---
+$spacing: (
+  "xs": 4px,
+  "sm": 8px,
+  "md": 16px,
+  "lg": 24px,
+  "xl": 32px,
+  "2xl": 48px,
+  "3xl": 64px
+);
+
+// --- Breakpoints ---
+$breakpoints: (
+  "mobile": 360px,
+  "tablet": 480px,
+  "desktop": 1024px
+);

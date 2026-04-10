@@ -1,0 +1,63 @@
+@use "sass:map";
+@import "variables";
+
+// --- Flexbox Helpers ---
+// Centers items along both axes
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Spreads items along the main axis with space between
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Stack items vertically
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// --- Glassmorphism ---
+// Creates a semi-transparent blurred background effect
+@mixin glass($bg: rgba(255, 255, 255, 0.05), $blur: 10px) {
+  background: $bg;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// --- Responsive Design ---
+@mixin mobile {
+  @media (max-width: map.get($breakpoints, "mobile")) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: map.get($breakpoints, "tablet")) { @content; }
+}
+
+// --- Animations ---
+// FIXED: This now correctly handles a list of properties with commas.
+// Before: transition: background color 0.3s ease; (Invalid)
+// After: transition: background 0.3s ease, color 0.3s ease; (Correct)
+@mixin transition($properties...) {
+  $transitions: ();
+  @each $prop in $properties {
+    $transitions: append($transitions, $prop 0.3s ease, $separator: comma);
+  }
+  transition: $transitions;
+}
+
+// Shorthand for card hover state effects
+@mixin card-hover {
+  @include transition(transform, border-color, background-color);
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--tf-accent);
+    background-color: var(--tf-hover);
+  }
+}
