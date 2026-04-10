@@ -2,13 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export interface ShopItem {
-  id: string;
-  name: string;
-  price: number;
-  image: string;       // path to item image
-  position: { x: number; y: number }; // position on the beach canvas
-}
+import { ShopItem } from "@/lib/items";
 
 interface ShopState {
   coins: number;
