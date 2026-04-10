@@ -1,0 +1,94 @@
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  .theme {
+    --font-heading: var(--font-pixel);
+    --font-sans: var(--font-sans);
+  }
+
+  :root {
+    /* Rose palette from extension */
+    --background: #fdf7f5;
+    --foreground: #2a1a18;
+    --card: #ffffff;
+    --card-foreground: #2a1a18;
+    --popover: #ffffff;
+    --popover-foreground: #2a1a18;
+    --primary: #c4604a;
+    --primary-foreground: #ffffff;
+    --secondary: #fcf0ed;
+    --secondary-foreground: #2a1a18;
+    --muted: #f0dcd8;
+    --muted-foreground: #9a7060;
+    --accent: #d4735a;
+    --accent-foreground: #ffffff;
+    --destructive: #e53e3e;
+    --border: #f0dcd8;
+    --input: #f0dcd8;
+    --ring: #c4604a;
+    --radius: 0.625rem;
+
+    /* Custom rose tokens */
+    --rose-bg: #fdf7f5;
+    --rose-surface: #ffffff;
+    --rose-hover: #fcf0ed;
+    --rose-text: #2a1a18;
+    --rose-muted: #9a7060;
+    --rose-ghost: #c8b0a8;
+    --rose-accent: #c4604a;
+    --rose-accent2: #d4735a;
+    --rose-accent-dim: rgba(196, 96, 74, 0.15);
+    --rose-line: #f0dcd8;
+    --rose-grid: rgba(196, 96, 74, 0.1);
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+}
+
+/* Pixel art rendering for images */
+.pixel-render {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--rose-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rose-ghost);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rose-accent);
+}
+
+/* Section snap scrolling */
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
